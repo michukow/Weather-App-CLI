@@ -37,13 +37,14 @@ def data_loading():
 def show_temp():
     with open('weather.json', 'r', encoding='utf-8') as file:
         dane = json.load(file)
-    weather = dane["current_weather"]
-    czas=weather["time"].split("T")
-    print(f"Weather for {lat}, {longi}: ")
-    print(f"Date: {czas[0]}")
-    print(f"Time: {czas[1]}")
-    print(f"Temperature: {weather["temperature"]}")
-    print(f"Wind speed: {weather["windspeed"]}")
-    print(f"Wind direction: {weather["winddirection"]}")
+        weather = dane["current_weather"]
+        czas=weather["time"].split("T")
+        print(f"Weather for {lat}, {longi}: ")
+        print(f"Date: {czas[0]}")
+        print(f"Time: {czas[1]}")
+        print(f"Temperature: {weather["temperature"]} °C.")
+        print(f"Wind speed: {weather["windspeed"]} km/h.")
+        print(f"Wind direction: {weather["winddirection"]} °.")
 
+data_loading()
 show_temp()
