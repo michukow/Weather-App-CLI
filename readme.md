@@ -12,5 +12,6 @@ based on latitude and longitude using the Open-Meteo public API.
 ## Technologies
 - Python
 - requests
+- JSON
 - Open-Meteo API
 
