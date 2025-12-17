@@ -12,12 +12,37 @@ def city():
         except ValueError:
             print("Insert valid latitude or longitude")
 
+def get_localisation(lat,longi):
+
+    params={
+    "lat":lat,
+    "lon": longi,
+    "format": "json",
+    "addressdetails": 1,
+    "accept-language": "pl",
+    "zoom": 10
+    }
+
+    headers = {
+    "User-Agent": "weather-app-michal/1.0"
+    }
+
+    url = "https://nominatim.openstreetmap.org/reverse?"
+    localisation=requests.get(url,params=params,headers=headers)
+    data=localisation.json()
+    address = data.get("address", {})
+    city = address.get("city") or address.get("town") or address.get("village")
+    country = address.get("country")
+    return city, country
+
 coordinates=city()
 lat=coordinates[0]
 longi=coordinates[1]
 
 def data_loading():
+    city_name, country = get_localisation(lat,longi)
     print(f"Looking for latitude: {lat} and longitude: {longi}")
+    print(f"It's coordinates for {city_name}, {country}")
 
     params = {
         "latitude": lat,
@@ -44,7 +69,7 @@ def show_temp():
         print(f"Time: {czas[1]}")
         print(f"Temperature: {weather["temperature"]} °C.")
         print(f"Wind speed: {weather["windspeed"]} km/h.")
-        print(f"Wind direction: {weather["winddirection"]} °.")
+        print(f"Wind direction: {weather["winddirection"]}°.")
 
 data_loading()
 show_temp()
