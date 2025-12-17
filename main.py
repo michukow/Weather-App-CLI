@@ -71,8 +71,8 @@ def show_weather():
         print(f"Weather for {lat}, {longi}: ")
         print(f"Date: {data}")
         print(f"Time: {czas}")
-        print(f"Temperature: {weather["temperature"]} °C.")
-        print(f"Wind speed: {weather["windspeed"]} km/h.")
-        print(f"Wind direction: {weather["winddirection"]}°.")
+        print(f"Temperature: {weather['temperature']} °C.")
+        print(f"Wind speed: {weather['windspeed']} km/h.")
+        print(f"Wind direction: {weather['winddirection']}°.")
 
 show_weather()
