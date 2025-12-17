@@ -42,7 +42,15 @@ longi=coordinates[1]
 def data_loading():
     city_name, country = get_localisation(lat,longi)
     print(f"Looking for latitude: {lat} and longitude: {longi}")
-    print(f"It's coordinates for {city_name}, {country}")
+
+    if city_name == None or country==None:
+        print("Coordinates could not be related to any place")
+    elif city_name==None:
+        print(f"Showing weather for {country}")
+    elif country==None:
+        print(f"Showing weather for {city_name}")
+    else:
+        print(f"Showing weather for {city_name}, {country}")
 
     params = {
         "latitude": lat,
@@ -54,22 +62,17 @@ def data_loading():
     zapytanie=requests.get(url,params=params)
 
     content=zapytanie.json()
-    print("Content from page was loaded successfully")
+    return content
 
-    with open('weather.json','w',encoding='utf-8') as file:
-        json.dump(content,file,ensure_ascii=False,indent=4)
-
-def show_temp():
-    with open('weather.json', 'r', encoding='utf-8') as file:
-        dane = json.load(file)
-        weather = dane["current_weather"]
-        czas=weather["time"].split("T")
+def show_weather():
+        content=data_loading()
+        weather = content["current_weather"]
+        data,czas=weather["time"].split("T")
         print(f"Weather for {lat}, {longi}: ")
-        print(f"Date: {czas[0]}")
-        print(f"Time: {czas[1]}")
+        print(f"Date: {data}")
+        print(f"Time: {czas}")
         print(f"Temperature: {weather["temperature"]} °C.")
         print(f"Wind speed: {weather["windspeed"]} km/h.")
         print(f"Wind direction: {weather["winddirection"]}°.")
 
-data_loading()
-show_temp()
+show_weather()
