@@ -14,4 +14,5 @@ based on latitude and longitude using the Open-Meteo public API.
 - requests
 - JSON
 - Open-Meteo API
+- Nominatium OpenStreet
 
