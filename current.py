@@ -12,34 +12,29 @@ def city():
         except ValueError:
             print("Insert valid latitude or longitude")
 
-def get_localisation(lat,longi):
-
-    params={
-    "lat":lat,
-    "lon": longi,
-    "format": "json",
-    "addressdetails": 1,
-    "accept-language": "pl",
-    "zoom": 10
+def get_localisation(lat, longi):
+    params = {
+        "lat": lat,
+        "lon": longi,
+        "format": "json",
+        "addressdetails": 1,
+        "accept-language": "pl",
+        "zoom": 10
     }
 
-    headers = {
-    "User-Agent": "weather-app-michal/1.0"
-    }
+    headers = {"User-Agent": "weather-app-michal/1.0"}
+    url = "https://nominatim.openstreetmap.org/reverse"
 
-    url = "https://nominatim.openstreetmap.org/reverse?"
-    localisation=requests.get(url,params=params,headers=headers)
-    data=localisation.json()
+    response = requests.get(url, params=params, headers=headers)
+    data = response.json()
+
     address = data.get("address", {})
-    city = address.get("city") or address.get("town") or address.get("village")
+    city_name = address.get("city") or address.get("town") or address.get("village")
     country = address.get("country")
-    return city, country
 
-coordinates=city()
-lat=coordinates[0]
-longi=coordinates[1]
+    return city_name, country
 
-def data_loading():
+def data_loading(lat,longi):
     city_name, country = get_localisation(lat,longi)
 
     params = {
@@ -54,19 +49,19 @@ def data_loading():
     return city_name, country, content
 
 
-def show_weather():
-    city_name,country,content=data_loading()
+def show_weather(lat,longi):
+    city_name,country,content=data_loading(lat,longi)
     weather = content["current_weather"]
     data,czas=weather["time"].split("T")
 
     if city_name is None or country is None:
-        print("Coordinates could not be related to any place")
+        print("Coordinates could not be related to any place.")
     elif city_name is None:
-        print(f"Showing weather for {country}")
+        print(f"Showing weather for: {country}")
     elif country is None:
-        print(f"Showing weather for {city_name}")
+        print(f"Showing weather for: {city_name}")
     else:
-        print(f"Showing weather for {city_name}, {country}")
+        print(f"Showing weather for: {city_name}, {country}")
         
     print(f"Date: {data}")
     print(f"Time: {czas}")
