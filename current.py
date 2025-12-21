@@ -41,16 +41,6 @@ longi=coordinates[1]
 
 def data_loading():
     city_name, country = get_localisation(lat,longi)
-    print(f"Looking for latitude: {lat} and longitude: {longi}")
-
-    if city_name == None or country==None:
-        print("Coordinates could not be related to any place")
-    elif city_name==None:
-        print(f"Showing weather for {country}")
-    elif country==None:
-        print(f"Showing weather for {city_name}")
-    else:
-        print(f"Showing weather for {city_name}, {country}")
 
     params = {
         "latitude": lat,
@@ -60,19 +50,26 @@ def data_loading():
 
     url = "https://api.open-meteo.com/v1/forecast"
     zapytanie=requests.get(url,params=params)
-
     content=zapytanie.json()
-    return content
+    return city_name, country, content
+
 
 def show_weather():
-        content=data_loading()
-        weather = content["current_weather"]
-        data,czas=weather["time"].split("T")
-        print(f"Weather for {lat}, {longi}: ")
-        print(f"Date: {data}")
-        print(f"Time: {czas}")
-        print(f"Temperature: {weather['temperature']} °C.")
-        print(f"Wind speed: {weather['windspeed']} km/h.")
-        print(f"Wind direction: {weather['winddirection']}°.")
+    city_name,country,content=data_loading()
+    weather = content["current_weather"]
+    data,czas=weather["time"].split("T")
 
-show_weather()
+    if city_name is None or country is None:
+        print("Coordinates could not be related to any place")
+    elif city_name is None:
+        print(f"Showing weather for {country}")
+    elif country is None:
+        print(f"Showing weather for {city_name}")
+    else:
+        print(f"Showing weather for {city_name}, {country}")
+        
+    print(f"Date: {data}")
+    print(f"Time: {czas}")
+    print(f"Temperature: {weather['temperature']} °C.")
+    print(f"Wind speed: {weather['windspeed']} km/h.")
+    print(f"Wind direction: {weather['winddirection']}°.")
