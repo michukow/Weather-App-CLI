@@ -1,5 +1,6 @@
 import requests
 import matplotlib.pyplot as plt
+from current import location
 
 def data_load(lat, longi):
     params = {
@@ -39,9 +40,11 @@ def chart(lat,longi):
 	ax2 = ax1.twinx()
 	ax2.bar(dates,rain,alpha=0.4,label="Rain (mm)")
 	ax2.set_ylabel("Rain (mm)")
-	ax2.set_ylim(0,max(rain)+1)
+	ax2.set_ylim(0,max(rain)+1 if max(rain)>0 else 1)
 
-	plt.title("7-day weather forecast")
+	city_name,country=location(lat,longi)
+	plt.title(f"7-days weather forecast"
+		f"{city_name or ''} {country or ''}\n lat: {lat}, lon: {longi}")
+
 	plt.xlabel("Date")
-
 	plt.show()

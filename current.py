@@ -48,21 +48,36 @@ def data_loading(lat,longi):
     content=zapytanie.json()
     return city_name, country, content
 
+def location(lat,longi):
+    try:
+        response=requests.get(...)
+        response.raise_for_status()
+        data=response.json()
+
+        address=data.get("address",{})
+        city=address.get("city") or address.get("town") or address.get("village")
+        country=address.get("country")
+
+        return city,country
+
+    except requests.RequestException:
+        return None,None
 
 def show_weather(lat,longi):
     city_name,country,content=data_loading(lat,longi)
-    weather = content["current_weather"]
+    weather=content["current_weather"]
     data,czas=weather["time"].split("T")
+    city_name,country=location(lat,longi)
 
     if city_name is None or country is None:
-        print("Coordinates could not be related to any place.")
+        print("Could not related coordinate to any city or country")
     elif city_name is None:
-        print(f"Showing weather for: {country}")
+        print(f"{country}")
     elif country is None:
-        print(f"Showing weather for: {city_name}")
+        print(f"{city_name}")
     else:
-        print(f"Showing weather for: {city_name}, {country}")
-        
+        print(f"{country}, {city_name}")
+
     print(f"Date: {data}")
     print(f"Time: {czas}")
     print(f"Temperature: {weather['temperature']} °C.")
