@@ -22,7 +22,6 @@ def forecasting(lat,longi):
 	temp=[]
 	rain=[]
 	data=data_load(lat,longi)
-	print("\n7-day weather forecast:")
 	for i in range(len(data["time"])):
 		dates.append(data['time'][i])
 		temp.append(data['temperature_2m_max'][i])
