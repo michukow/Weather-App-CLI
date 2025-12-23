@@ -16,3 +16,6 @@ based on latitude and longitude using the Open-Meteo public API.
 - Open-Meteo API
 - Nominatium OpenStreet
 
+## Screenshoots
+![7-days forecast](/1.png)
+
