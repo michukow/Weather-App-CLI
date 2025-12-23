@@ -1,8 +1,8 @@
 import requests
 import matplotlib.pyplot as plt
-from current import location
 
-def data_load(lat, longi):
+
+def data_load(lat,longi):
     params = {
         "latitude": lat,
         "longitude": longi,
@@ -18,7 +18,7 @@ def data_load(lat, longi):
     data = response.json()["daily"]
     return data
 
-def forecasting(lat,longi):
+def forecasting(lat,longi,city=None,country=None):
 	dates=[]
 	temp=[]
 	rain=[]
@@ -29,7 +29,18 @@ def forecasting(lat,longi):
 		rain.append(data['rain_sum'][i])  
 	return dates, temp, rain
 
-def chart(lat,longi):
+def location_label(city=None,country=None,lat=None,lon=None):
+    if city and country:
+        return f"{city}, {country}"
+    if city:
+        return city
+    if country:
+        return country
+    if lat is not None and lon is not None:
+        return f"lat: {lat}, lon: {lon}"
+    return "Unknown location"
+
+def chart(lat,longi,city=None, country=None):
 	dates,temp,rain=forecasting(lat, longi)
 
 	fig, ax1 = plt.subplots(figsize=(10, 5))
@@ -42,9 +53,9 @@ def chart(lat,longi):
 	ax2.set_ylabel("Rain (mm)")
 	ax2.set_ylim(0,max(rain)+1 if max(rain)>0 else 1)
 
-	city_name,country=location(lat,longi)
-	plt.title(f"7-days weather forecast"
-		f"{city_name or ''} {country or ''}\n lat: {lat}, lon: {longi}")
+	title = "7-day weather forecast\n"
+	title += location_label(city, country, lat, longi)
+	plt.title(title)
 
 	plt.xlabel("Date")
 	plt.show()

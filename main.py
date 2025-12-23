@@ -1,12 +1,11 @@
-from current import city, show_weather, location
-from forecast import data_load, chart
+from current import city, data_loading, show_weather
+from forecast import chart
 
 def main():
-    lat,longi = city()
-    location(lat,longi)
+    lat,longi=city()
+    city_name,country, _ =data_loading(lat,longi)
     show_weather(lat,longi)
-    data_load(lat,longi)
-    chart(lat,longi)
+    chart(lat,longi,city_name,country)
 
 if __name__ == "__main__":
     main()
