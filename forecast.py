@@ -53,7 +53,7 @@ def chart(lat,longi,city=None, country=None):
 	ax2.set_ylabel("Rain (mm)")
 	ax2.set_ylim(0,max(rain)+1 if max(rain)>0 else 1)
 
-	title = "7-day weather forecast\n"
+	title = "7-days weather forecast\n"
 	title += location_label(city, country, lat, longi)
 	plt.title(title)
 
