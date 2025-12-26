@@ -9,12 +9,14 @@ based on latitude and longitude using the Open-Meteo public API.
 - JSON data saving
 - display: temperature, wind direction, wind speed
 - drawing a chart: rain and max. temperature for the next 7 days
+- TEST: Simple window
 
 ## Technologies
 - Python
 - requests, matplotlib
 - Open-Meteo API
 - Nominatium OpenStreet
+- Tkinter
 
 ## Screenshoots
 ![7-days forecast](/1.png)
