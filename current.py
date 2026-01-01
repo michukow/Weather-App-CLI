@@ -67,3 +67,5 @@ def show_weather(lat, longi):
     print(f"Temperature: {weather['temperature']} °C.")
     print(f"Wind speed: {weather['windspeed']} km/h.")
     print(f"Wind direction: {weather['winddirection']}°.")
+
+    
