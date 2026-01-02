@@ -1,5 +1,7 @@
 import requests
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 def data_load(lat,longi):
@@ -40,22 +42,23 @@ def location_label(city=None,country=None,lat=None,lon=None):
         return f"lat: {lat}, lon: {lon}"
     return "Unknown location"
 
-def chart(lat,longi,city=None, country=None):
-	dates,temp,rain=forecasting(lat, longi)
+def chart(parent,lat,longi,city=None,country=None):
+    dates,temp,rain=forecasting(lat,longi)
+    fig=Figure(figsize=(10,10))
+    ax1=fig.add_subplot(111)
 
-	fig, ax1 = plt.subplots(figsize=(10, 5))
-	ax1.plot(dates, temp, marker="o", label="Max temperature (°C)",color="red")
-	ax1.set_ylabel("Max temperature (°C)")
-	ax1.set_ylim(min(temp)-2, max(temp)+2)
+    ax1.plot(dates,temp,marker="o",label="Max temperature (°C)",color="red")
+    ax1.set_ylabel("Max temperature (°C)")
+    ax1.set_ylim(min(temp)-2,max(temp)+2)
 
-	ax2 = ax1.twinx()
-	ax2.bar(dates,rain,alpha=0.4,label="Rain (mm)")
-	ax2.set_ylabel("Rain (mm)")
-	ax2.set_ylim(0,max(rain)+1 if max(rain)>0 else 1)
+    ax2=ax1.twinx()
+    ax2.bar(dates,rain,alpha=0.4,label="Rain (mm)")
+    ax2.set_ylabel("Rain (mm)")
+    ax2.set_ylim(0,max(rain)+1 if max(rain)>0 else 1)
 
-	title = "7-days weather forecast\n"
-	title += location_label(city, country, lat, longi)
-	plt.title(title)
+    ax1.set_title(location_label(city, country,lat,longi))
+    ax1.tick_params(axis="x",rotation=45)
 
-	plt.xlabel("Date")
-	plt.show()
+    canvas=FigureCanvasTkAgg(fig,parent)
+    canvas.draw()
+    canvas.get_tk_widget().pack()

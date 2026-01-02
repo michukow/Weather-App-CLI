@@ -1,17 +1,5 @@
 import requests, json
 
-def city():
-    while True:
-        try:
-            lat = float(input("Insert the latitude: "))
-            longi = float(input("Insert the longitude: "))
-            if -90 <= lat <= 90 and -180 <= longi <= 180:
-                return round(lat,2), round(longi,2)
-            else:
-                print("Invalid range. Try again.")
-        except ValueError:
-            print("Insert valid latitude or longitude")
-
 def get_localisation(lat,longi):
     params = {
         "lat": lat,
@@ -35,7 +23,7 @@ def get_localisation(lat,longi):
     return city_name,country
 
 def data_loading(lat,longi):
-    city_name, country = get_localisation(lat,longi)
+    city_name,country=get_localisation(lat,longi)
 
     params = {
         "latitude": lat,
@@ -51,21 +39,5 @@ def data_loading(lat,longi):
 def show_weather(lat, longi):
     city_name,country,content=data_loading(lat,longi)
     weather=content["current_weather"]
-    data,czas=weather["time"].split("T")
-
-    if city_name is None and country is None:
-        print("Could not relate coordinate to any city or country")
-    elif city_name is None:
-        print(country)
-    elif country is None:
-        print(city_name)
-    else:
-        print(f"{city_name}, {country}")
-
-    print(f"Date: {data}")
-    print(f"Time: {czas}")
-    print(f"Temperature: {weather['temperature']} °C.")
-    print(f"Wind speed: {weather['windspeed']} km/h.")
-    print(f"Wind direction: {weather['winddirection']}°.")
-
-    
+    date,time=weather["time"].split("T")
+    return date,time,weather['temperature'],weather['windspeed'],weather['winddirection']
