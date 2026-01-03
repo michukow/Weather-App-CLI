@@ -24,5 +24,5 @@ based on latitude and longitude using the Open-Meteo public API.
 
 ## Updates
 - 1.0 -> CLI App (displaying current weather and simple chart in CLI) - 21.12.2025
-- 2.0 -> Simple Window (displaying window app with curent weather and 7-days forecast) - 02.01.2026
+- 2.0 -> Simple Window App (displaying window app with curent weather and 7-days forecast) - 02.01.2026
 
