@@ -12,7 +12,7 @@ def info():
         if not(-90<=lat<= 90 and -180<=longi<= 180):
             raise ValueError("Coordinates out of range")
 
-        city_name, country, _ = data_loading(lat,longi)
+        city_name,country, _ = data_loading(lat,longi)
         date,time,temperature,wind_sp,wind_dir=show_weather(lat,longi)
         chart_frame=Frame(root)
         chart_frame.pack()
@@ -20,8 +20,7 @@ def info():
         label.config(
         text=(
         f"Location: {location_label(city_name,country,lat,longi)}\n"
-        f"Date: {date}\n"
-        f"Time: {time}\n"
+        f"Date: {date}, Time: {time}\n"
         f"Temperature: {temperature} °C\n"
         f"Wind: {wind_sp} km/h, {wind_dir}°"
         ),
