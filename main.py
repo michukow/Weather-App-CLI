@@ -1,56 +1,64 @@
 from current import data_loading, show_weather
 from forecast import location_label, chart
-from tkinter import *
+import customtkinter as ctk
+from tkinter import messagebox
 
-root=Tk()
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue") 
+
+root = ctk.CTk()
 
 def info():
     try:
         lat=float(lat_entry.get())
-        longi=float(lon_entry.get())
+        lon=float(lon_entry.get())
 
-        if not(-90<=lat<= 90 and -180<=longi<= 180):
-            raise ValueError("Coordinates out of range")
+        if not (-90<=lat<= 90 and -180<=lon<=180):
+            raise ValueError
 
-        city_name,country, _ = data_loading(lat,longi)
-        date,time,temperature,wind_sp,wind_dir=show_weather(lat,longi)
-        chart_frame=Frame(root)
-        chart_frame.pack()
+        city_name,country, _ = data_loading(lat,lon)
+        date,time,temperature,wind_sp,wind_dir=show_weather(lat,lon)
 
-        label.config(
-        text=(
-        f"Location: {location_label(city_name,country,lat,longi)}\n"
-        f"Date: {date}, Time: {time}\n"
-        f"Temperature: {temperature} °C\n"
-        f"Wind: {wind_sp} km/h, {wind_dir}°"
-        ),
-        fg="black",justify="left")
-        chart(chart_frame,lat,longi,city_name,country)
+        result_label.configure(
+            text=(
+                f"Date: {date} | Time: {time}\n"
+                f"Max. temperature: {temperature} °C\n"
+                f"Wind speed: {wind_sp} km/h | Wind direction: {wind_dir}°"
+            )
+        )
+
+        chart_frame=ctk.CTkFrame(root,fg_color="transparent")
+        chart_frame.grid(row=4,column=0,columnspan=2,pady=20)
+        chart(chart_frame,lat,lon,city_name,country)
 
     except ValueError:
-        messagebox.showerror("Invalid input","Latitude must be between -90 and 90\nLongitude must be between -180 and 180")
+        messagebox.showerror("Invalid input","Latitude: -90 to 90\nLongitude: -180 to 180")
 
 def window():
-    global lat_entry,lon_entry,label
+
+    global lat_entry,lon_entry
 
     root.title("Weather App")
-    root.geometry("1250x750")
+    root.geometry("1100x700")
+    root.grid_columnconfigure((0,1),weight=1)
 
-    Label(root,text="Latitude:").pack()
-    lat_entry=Entry(root,width=20)
-    lat_entry.pack()
+    title = ctk.CTkLabel(root,text="Weather App",font=ctk.CTkFont(size=28,weight="bold"))
+    title.grid(row=0,column=0,columnspan=2,pady=(20,10))
 
-    Label(root,text="Longitude:").pack()
-    lon_entry=Entry(root,width=20)
-    lon_entry.pack()
+    lat_entry=ctk.CTkEntry(root,placeholder_text="Latitude")
+    lat_entry.grid(row=1,column=0,padx=20,pady=10,sticky="ew")
 
-    btn=Button(root,text="Check current weather",command=info)
-    btn.pack(pady=10)
+    lon_entry=ctk.CTkEntry(root,placeholder_text="Longitude")
+    lon_entry.grid(row=1,column=1,padx=20,pady=10,sticky="ew")
 
-    label=Label(root,text="Enter coordinates and click the button")
-    label.pack(pady=10)
+    btn=ctk.CTkButton(root,text="Check current weather",command=info)
+    btn.grid(row=2,column=0,columnspan=2,pady=15)
 
-    root.mainloop()
+    global result_label
+    result_label=ctk.CTkLabel(root,text="",font=ctk.CTkFont(size=16),justify="left")
+    result_label.grid(row=3,column=0,columnspan=2,pady=10)
+
 
 if __name__ == "__main__":
     window()
+    root.mainloop()
