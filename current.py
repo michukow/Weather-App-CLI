@@ -28,7 +28,8 @@ def data_loading(lat,longi):
     params = {
         "latitude": lat,
         "longitude": longi,
-        "current_weather": True
+        "current_weather": True,
+        "timezone": "Europe/Warsaw"
     }
 
     url = "https://api.open-meteo.com/v1/forecast"

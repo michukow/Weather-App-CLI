@@ -12,7 +12,7 @@ def data_load(lat,longi):
             "temperature_2m_max",
             "rain_sum"
         ],
-        "timezone": "auto"
+        "timezone": "Europe/Warsaw"
     }
 
     url = "https://api.open-meteo.com/v1/forecast"
